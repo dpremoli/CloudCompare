@@ -1,0 +1,22 @@
+{
+  "type": "Standard",
+  "core": true,
+  "name": "qFFTFilter",
+  "icon": ":/CC/plugin/qFFTFilter/images/icon.png",
+  "description": "Compute FFT spectrum of scalar fields and apply frequency-domain filtering",
+  "authors": [
+    {
+      "name": "Your Name",
+      "email": "your.email@example.com"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Your Name",
+      "email": "your.email@example.com"
+    }
+  ],
+  "references": [],
+  "version": "1.0.0",
+  "min_cc_version": "2.12.0"
+}

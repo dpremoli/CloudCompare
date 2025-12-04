@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>qFFTFilterDialog</class>
+ <widget class="QDialog" name="qFFTFilterDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>750</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FFT Filter</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <!-- Cloud Info Section -->
+    <widget class="QGroupBox" name="cloudGroupBox">
+     <property name="title">
+      <string>Point Cloud</string>
+     </property>
+     <layout class="QVBoxLayout" name="cloudLayout">
+      <item>
+       <widget class="QLabel" name="cloudLabel">
+        <property name="text">
+         <string>No cloud selected</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   
+   <item>
+    <!-- Scalar Field Selection -->
+    <widget class="QGroupBox" name="scalarFieldGroupBox">
+     <property name="title">
+      <string>Scalar Field Selection</string>
+     </property>
+     <layout class="QFormLayout" name="scalarFieldLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="scalarFieldLabel">
+        <property name="text">
+         <string>Scalar Field:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="scalarFieldComboBox">
+        <property name="toolTip">
+         <string>Select the scalar field to process (point order = time order)</string>
+        </property>
+       </widget>
+      </item>
+      
+      <item row="1" column="0">
+       <widget class="QLabel" name="samplingFreqLabel">
+        <property name="text">
+         <string>Sampling Frequency (Hz):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="samplingFreqSpinBox">
+        <property name="toolTip">
+         <string>Enter the capture/sampling frequency in Hz</string>
+        </property>
+        <property name="minimum">
+         <double>0.001</double>
+        </property>
+        <property name="maximum">
+         <double>1000000.0</double>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+       </widget>
+      </item>
+      
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="downsampleCheckBox">
+        <property name="text">
+         <string>Downsample before FFT (recommended for large datasets)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Reduces computation time by analyzing every Nth point</string>
+        </property>
+       </widget>
+      </item>
+      
+      <item row="3" column="0">
+       <widget class="QLabel" name="downsampleLabel">
+        <property name="text">
+         <string>Downsample Factor:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="downsampleSpinBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+        <property name="toolTip">
+         <string>Take every Nth point (e.g., 100 = use 1% of points for FFT)</string>
+        </property>
+       </widget>
+      </item>
+      
+      <item row="4" column="0" colspan="2">
+       <widget class="QPushButton" name="computeFFTButton">
+        <property name="text">
+         <string>Compute FFT</string>
+        </property>
+        <property name="toolTip">
+         <string>Compute the FFT magnitude spectrum</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   
+   <item>
+    <!-- FFT Plot Section -->
+    <widget class="QGroupBox" name="fftPlotGroupBox">
+     <property name="title">
+      <string>FFT Magnitude Spectrum</string>
+     </property>
+     <layout class="QVBoxLayout" name="plotLayout">
+      <item>
+       <!-- Placeholder for plot widget -->
+       <widget class="QWidget" name="plotWidget" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string>QWidget#plotWidget { background-color: white; border: 1px solid gray; }</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="plotInfoLabel">
+        <property name="text">
+         <string>Compute FFT to see spectrum</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   
+   <item>
+    <!-- Filter Controls Section -->
+    <widget class="QGroupBox" name="filterGroupBox">
+     <property name="title">
+      <string>Frequency Filter (Band-Pass)</string>
+     </property>
+     <layout class="QFormLayout" name="filterLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lowFreqLabel">
+        <property name="text">
+         <string>Low Cutoff (Hz):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="lowFreqHLayout">
+        <item>
+         <widget class="QSlider" name="lowFreqSlider">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="lowFreqSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      
+      <item row="1" column="0">
+       <widget class="QLabel" name="highFreqLabel">
+        <property name="text">
+         <string>High Cutoff (Hz):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="highFreqHLayout">
+        <item>
+         <widget class="QSlider" name="highFreqSlider">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="highFreqSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="createNewSFCheckBox">
+        <property name="text">
+         <string>Create new scalar field for filtered signal</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      
+      <item row="3" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="buttonLayout">
+        <item>
+         <widget class="QPushButton" name="applyFilterButton">
+          <property name="text">
+           <string>Apply Filter</string>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="resetRangeButton">
+          <property name="text">
+           <string>Reset Range</string>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   
+   <item>
+    <!-- Close Button -->
+    <layout class="QHBoxLayout" name="closeButtonLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="closeButton">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>closeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>qFFTFilterDialog</receiver>
+   <slot>accept()</slot>
+  </connection>
+ </connections>
+</ui>
